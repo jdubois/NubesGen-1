@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.nubesgen.configuration.*;
 import io.github.nubesgen.service.CodeGeneratorService;
-import io.github.nubesgen.service.TelemetryService;
 import io.github.nubesgen.service.compression.CompressionService;
 import io.github.nubesgen.service.compression.TarGzService;
 import io.github.nubesgen.service.compression.ZipService;
@@ -35,9 +34,6 @@ public class MainController {
     private final ZipService zipService;
 
     private final ObjectMapper objectMapper;
-
-    @Autowired(required = false)
-    private TelemetryService telemetryService;
 
     public MainController(CodeGeneratorService codeGeneratorService, TarGzService tarGzService, ZipService zipService, ObjectMapper objectMapper) {
         this.codeGeneratorService = codeGeneratorService;
@@ -188,9 +184,6 @@ public class MainController {
         try {
             String jsonConfiguration = objectMapper.writeValueAsString(properties);
             log.info("Generating cloud configuration\n{}", jsonConfiguration);
-            if (telemetryService != null) {
-                this.telemetryService.storeConfiguration(jsonConfiguration);
-            }
         } catch (JsonProcessingException e) {
             log.error("Nubesgen configuration could not be mapped to JSON", e);
         }
