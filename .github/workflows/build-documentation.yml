@@ -1,0 +1,24 @@
+name: Build documentation
+
+on:
+  push:
+    branches:
+    - documentation
+jobs:
+  build-documentation:
+    runs-on: ubuntu-20.04
+    name: Use AsciiDoctor to render the HTML documentation
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Get build container
+      id: adocbuild
+      uses: avattathil/asciidoctor-action@master
+      with:
+          program: "asciidoctor -D docs --backend=html5 -o index.html docs/index.adoc"
+    - name: Deploy HTML documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with: 
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_branch: documentation
+        publish_dir: ./html/
