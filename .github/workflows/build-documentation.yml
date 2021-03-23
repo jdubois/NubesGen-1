@@ -15,7 +15,7 @@ jobs:
       id: adocbuild
       uses: avattathil/asciidoctor-action@master
       with:
-          program: "asciidoctor -D docs --backend=html5 -o index.html docs/index.adoc"
+          program: "asciidoctor -D docs --backend=html5 -o html/index.html index.adoc"
     - name: Deploy HTML documentation
       uses: peaceiris/actions-gh-pages@v3
       with: 
